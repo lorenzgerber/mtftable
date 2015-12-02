@@ -84,8 +84,17 @@ VALUE table_lookup(Table *table, KEY key) {
   dlist_position p=dlist_first(t->values);
   while (!dlist_isEnd(t->values,p)) {
     i=dlist_inspect(t->values,p);
-    if (t->cf(i->key,key)==0) 
+    if (t->cf(i->key,key)==0) {
+
+      dlist_position temp1 = p->next->next;
+      dlist_position temp2 = t->values->head->next;
+
+      t->values->head->next=p->next;
+      p->next->next=temp2;
+      p->next=temp1;
       return i->value;
+    }
+
     p=dlist_next(t->values,p);
   }
   return NULL;
