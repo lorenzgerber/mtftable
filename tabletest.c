@@ -33,6 +33,7 @@ Usage exept those listed above requires permission by the author.
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 
 // Size of the table to generate
@@ -69,6 +70,15 @@ unsigned long get_milliseconds()
  */
 int compareInt(void *ip,void *ip2){
   return (*(int*)ip) - (*(int*)ip2);
+}
+
+/*Compare function used to compare two string values (pointed to by ip and ip2) are equal
+ * ip, ip2 - pointers to two integers
+ * Returns
+ *    0 if values are equal, nonzero otherwize
+ */
+int compareString(void *ip,void *ip2){
+  return strcmp((char*)ip, (char*)ip2);
 }
 
 /* Shuffles the numbers stored in seq
@@ -126,7 +136,7 @@ void getInsertSpeed(Table *table, int *keys, int *values){
 void getRandomExistingLookupSpeed(Table *table, int *keys, int n){
   unsigned long start;
   unsigned long end;
-    
+
   printf("%d random lookups: \n",n );
   start = get_milliseconds();
   for(int i=0;i<n;i++) {
@@ -226,7 +236,7 @@ void testIsempty(){
  * and one element (key-value-pair) is inserted to it.
  */
 void testInsertSingleElement(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char key[5] = "key1";
   char value[7] = "value1";
 
@@ -251,7 +261,7 @@ void testLookupExistingKey(Table *table, char *key, char *value){
     printf("Looked up an existing key, table claims it does not exist.\n");
     exit(EXIT_FAILURE);
   }
-  if (returnValue != value){
+  if (strcmp(returnValue, value)){
     printf("Looked up a key but the value returned was wrong.");
     printf(" Expected: %s but got %s", value, returnValue);
     exit(EXIT_FAILURE);
@@ -268,7 +278,7 @@ void testLookupExistingKey(Table *table, char *key, char *value){
  *  results in an nonempty table.
  */
 void testLookupSingleElement(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key = "key1";
   char *key2 = "key2";
   char *value = "value1";
@@ -300,7 +310,7 @@ void testLookupSingleElement(){
  *  looking up an key-value-pairs is working with tablesize=1.
  */
 void testInsertLookupDifferentKeys(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key1 = "key1";
   char *key2 = "key2";
   char *key3 = "key3";
@@ -330,7 +340,7 @@ void testInsertLookupDifferentKeys(){
  *
  */
 void testInsertLookupSameKeys(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key1 = "key1";
   char *value1 = "value1";
   char *value2 = "value2";
@@ -353,7 +363,7 @@ void testInsertLookupSameKeys(){
  *  results in an nonempty table.
  */
 void testRemoveSingleElement(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key1 = "key1";
   char *value1 = "value1";
 
@@ -377,7 +387,7 @@ void testRemoveSingleElement(){
  *  one element from a table with one element results in an empty table.
  */
 void testRemoveElementsDifferentKeys(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key1 = "key1";
   char *key2 = "key2";
   char *key3 = "key3";
@@ -418,7 +428,7 @@ void testRemoveElementsDifferentKeys(){
  *  one element from a table with one element results in an empty table.
  */
 void testRemoveElementsSameKeys(){
-  Table *table = table_create(compareInt);
+  Table *table = table_create(compareString);
   char *key1 = "key1";
   char *value1 = "value1";
   char *value2 = "value2";
