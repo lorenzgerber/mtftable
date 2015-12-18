@@ -2,6 +2,7 @@
  * Move-To-Front List. The datatype is constructed
  * on top of singly-linked list implementation 'dlist.c'.
  * Written by Lorenz Gerber <dv15lgr@cs.umu.se>.
+ * December 18, 2015.
  */
 #include <stdio.h>
 #include "table.h"
@@ -178,7 +179,7 @@ void table_free(Table *table) {
       t->valueFree(i->value);
     p=dlist_remove(t->values,p);
   }
-  
+
   // freeing / removing the dlist and the table struct
   dlist_free(t->values);
   free(t);
